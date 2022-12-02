@@ -22,8 +22,11 @@
             <form id="city-form">
                 <div class="form-group">
                   <label for="city">City</label>
-                  <input name="city" type="text" class="form-control" id="inputCity" placeholder="Enter City">
-
+                  <input name="city" type="text" class="form-control" id="inputCity" placeholder="Ex: Oakland">
+                  <label for="state">State Code (USA only)</label>
+                  <input name="state" type="text" class="form-control" id="inputState" placeholder="Ex: CA">
+                  <label for="country">Country Code</label>
+                  <input name="country" type="text" class="form-control" id="inputCountry" placeholder="Ex: USA">
                 </div>           
                 <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
               </form>
@@ -39,8 +42,10 @@
             <section id="today">
                 <h2 id="city-name"></h2>
                 <!-- add Temp, Wind, and Humidity dynamically -->
-                <ul class="weather-params"> 
-
+                <ul class="weather-params" id="current-weather"> 
+                    <li id="currentTemp"></li>
+                    <li id="currentWind"></li>
+                    <li id="currentHumidity"></li>
                 </ul>
             </section>
 
@@ -48,36 +53,46 @@
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         <!-- week-day -->
-                      <h5 class="car-title" id="forcast-day-1"></h5> 
+                      <h5 class="car-title" ></h5> 
                       <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-1"></h6>
-                      <ul class="weather-params"></ul>                   
+                      <ul class="weather-params" id="forcast-day-1"></ul>                   
                     </div>
 
                     <div class="card-body">
                         <!-- week-day -->
-                      <h5 class="car-title" id="forcast-day-2"></h5> 
+                      <h5 class="car-title" ></h5> 
                       <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-2"></h6>
-                      <ul class="weather-params"></ul>                   
+                      <ul class="weather-params" id="forcast-day-2"></ul>                   
                     </div>
 
                     <div class="card-body">
                         <!-- week-day -->
-                      <h5 class="car-title" id="forcast-day-3"></h5> 
+                      <h5 class="car-title" ></h5> 
                       <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-3"></h6>
-                      <ul class="weather-params"></ul>                   
+                      <ul class="weather-params" id="forcast-day-3"></ul>                   
                     </div>
 
                     <div class="card-body">
                         <!-- week-day -->
-                      <h5 class="car-title" id="forcast-day-4"></h5> 
+                      <h5 class="car-title" ></h5> 
                       <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-4"></h6>
-                      <ul class="weather-params"></ul>                   
+                      <ul class="weather-params" id="forcast-day-4"></ul>                   
+                    </div>
+
+                    <div class="card-body">
+                        <!-- week-day -->
+                      <h5 class="car-title" ></h5> 
+                      <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-4"></h6>
+                      <ul class="weather-params" id="forcast-day-5"></ul>                   
                     </div>
                   
             </section>
 
         </section>
     </main>
+<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+<!-- <script> var utc = require('dayjs/plugin/utc') -->
+    <!-- dayjs.extend(utc)</script> -->
 <script src="./assets/js/script.js"></script>
 </body>
 </html>
