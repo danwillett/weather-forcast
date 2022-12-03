@@ -1,98 +1,118 @@
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- link bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <!-- link bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-    <title>Weather Tracker</title>
+  <link rel="stylesheet" href="./assets/css/reset.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <title>Weather Tracker</title>
 </head>
+
 <body>
-    <header>
-        <h1>Weather Dashboard</h1>
-    </header>
-    
-    <main class="container-fluid">
-        <!-- city search form + past search records -->
-        <section class="search col-4">
-            <h2>Search for a City:</h2>
-            <form id="city-form">
-                <div class="form-group">
-                  <label for="city">City</label>
-                  <input name="city" type="text" class="form-control" id="inputCity" placeholder="Ex: Oakland">
-                  <label for="state">State Code (USA only)</label>
-                  <input name="state" type="text" class="form-control" id="inputState" placeholder="Ex: CA">
-                  <label for="country">Country Code</label>
-                  <input name="country" type="text" class="form-control" id="inputCountry" placeholder="Ex: USA">
-                </div>           
-                <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
-              </form>
-              <!-- <form id="user-form" class="card-body">
-                <label class="form-label" for="city">Enter City</label>
-                <input name="city" id="city" type="text" autofocus="true" class="form-input" />
-                <button type="submit" class="btn">Get Forcast</button>
-              </form> -->
-        </section>
+  <header>
+    <h1> Weather Dashboard</h1>
+    <h2 id="today-date"></h2>
+  </header>
 
-        <section class="weather col-6">
+  <main class="container-fluid w=100 row">
+     <!-- d-flex flex-row flex-wrap"> -->
+    <!-- city search form + past search records -->
+    <section class="search col-lg-3 col-md-3 col-sm-12">
+      <h2>Search for a City:</h2>
+      <form id="city-form">
+        <div class="form-group">
+          <label for="city">City</label>
+          <input name="city" type="text" class="form-control" id="inputCity" placeholder="Ex: Oakland">
+          <label for="state">State Code (USA only)</label>
+          <input name="state" type="text" class="form-control" id="inputState" placeholder="Ex: CA">
+          <label for="country">Country Code</label>
+          <input name="country" type="text" class="form-control" id="inputCountry" placeholder="Ex: USA">
+        </div>
+        <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
+      </form>
 
-            <section id="today">
-                <h2 id="city-name"></h2>
-                <!-- add Temp, Wind, and Humidity dynamically -->
-                <ul class="weather-params" id="current-weather"> 
-                    <li id="currentTemp"></li>
-                    <li id="currentWind"></li>
-                    <li id="currentHumidity"></li>
-                </ul>
-            </section>
+      <section id="search-history"></section>
 
-            <section id="forcast">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <!-- week-day -->
-                      <h5 class="car-title" ></h5> 
-                      <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-1"></h6>
-                      <ul class="weather-params" id="forcast-day-1"></ul>                   
-                    </div>
+    </section>
 
-                    <div class="card-body">
-                        <!-- week-day -->
-                      <h5 class="car-title" ></h5> 
-                      <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-2"></h6>
-                      <ul class="weather-params" id="forcast-day-2"></ul>                   
-                    </div>
+    <section id="weather" class="col-lg-9 col-md-9 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <section id="today">
+            
+            <!-- <h2>Today's Conditions - </h2> -->
 
-                    <div class="card-body">
-                        <!-- week-day -->
-                      <h5 class="car-title" ></h5> 
-                      <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-3"></h6>
-                      <ul class="weather-params" id="forcast-day-3"></ul>                   
-                    </div>
 
-                    <div class="card-body">
-                        <!-- week-day -->
-                      <h5 class="car-title" ></h5> 
-                      <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-4"></h6>
-                      <ul class="weather-params" id="forcast-day-4"></ul>                   
-                    </div>
+            <h2 id="city-name"></h2>
+            <!-- add Temp, Wind, and Humidity dynamically -->
+            <ul class="weather-params" id="current-weather">
+              <li id="currentTemp"></li>
+              <li id="currentWind"></li>
+              <li id="currentHumidity"></li>
+            </ul>
 
-                    <div class="card-body">
-                        <!-- week-day -->
-                      <h5 class="car-title" ></h5> 
-                      <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-4"></h6>
-                      <ul class="weather-params" id="forcast-day-5"></ul>                   
-                    </div>
-                  
-            </section>
+            <ul id="today-weather"></ul>
+             
+          </section>
 
-        </section>
-    </main>
-<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-<!-- <script> var utc = require('dayjs/plugin/utc') -->
-    <!-- dayjs.extend(utc)</script> -->
-<script src="./assets/js/script.js"></script>
+          <section id="forcast" class="d-flex flex-row flex-wrap justify-content-center">
+            <div class="card ">
+              <div class="card-body">
+                <!-- week-day -->
+                <h5 class="car-title"></h5>
+                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-1"></h6>
+                <ul class="weather-params" id="forcast-day-1"></ul>
+              </div>
+            </div>
+            <div class="card ">
+              <div class="card-body">
+                <!-- week-day -->
+                <h5 class="car-title"></h5>
+                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-2"></h6>
+                <ul class="weather-params" id="forcast-day-2"></ul>
+              </div>
+            </div>
+            <div class="card ">
+              <div class="card-body">
+                <!-- week-day -->
+                <h5 class="car-title"></h5>
+                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-3"></h6>
+                <ul class="weather-params" id="forcast-day-3"></ul>
+              </div>
+            </div>
+            <div class="card ">
+              <div class="card-body">
+                <!-- week-day -->
+                <h5 class="car-title"></h5>
+                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-4"></h6>
+                <ul class="weather-params" id="forcast-day-4"></ul>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <!-- week-day -->
+                <h5 class="car-title"></h5>
+                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-4"></h6>
+                <ul class="weather-params" id="forcast-day-5"></ul>
+              </div>
+            </div>
+
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <!-- <script> var utc = require('dayjs/plugin/utc') -->
+  <!-- dayjs.extend(utc)</script> -->
+  <script src="./assets/js/script.js"></script>
 </body>
+
 </html>
