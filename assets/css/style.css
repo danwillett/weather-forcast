@@ -10,8 +10,40 @@ header {
 
 h2 {
     font-size: x-large;
+    margin: 1rem 0;
 }
 
-.searchButton {
-    
+h3 {
+    font-size: large;
+    margin-bottom: 0;
+}
+
+input {
+    margin: 0.5rem 0;
+}
+
+
+#city-name {
+    font-size: xx-large;
+    margin-bottom: 0;
+}
+
+#currentTemp{
+    font-size: xx-large;
+    margin-bottom: 0;
+}
+
+.weather-params{
+    gap:10%
+}
+
+.icon-forcast {
+    max-width: 70px;
+}
+
+#error-message {
+    font-size: medium;
+    margin-top: 1rem;
+    display: none;
+    color:red;
 }

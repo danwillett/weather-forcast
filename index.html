@@ -38,69 +38,92 @@
         <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
       </form>
 
-      <section id="search-history"></section>
+      <article id="error-message">Please enter a valid city.</article>
+
+      <section id="search-history" class="py-4"></section>
+
+      <button id="clear-history" class="btn btn-warning">Clear Cities</button>
 
     </section>
 
     <section id="weather" class="col-lg-9 col-md-9 col-sm-12">
       <div class="card">
-        <div class="card-body">
-          <section id="today">
+        <div class="card-header bg-light">
+          <section class="city-name d-flex flex-wrap flex-row align-items-center justify-content-between">
             
-            <!-- <h2>Today's Conditions - </h2> -->
-
-
-            <h2 id="city-name"></h2>
-            <!-- add Temp, Wind, and Humidity dynamically -->
-            <ul class="weather-params" id="current-weather">
-              <li id="currentTemp"></li>
-              <li id="currentWind"></li>
-              <li id="currentHumidity"></li>
-            </ul>
-
-            <ul id="today-weather"></ul>
-             
+            <p id="city-name"></p>
+            
+            <div class="d-flex flex-row flex-wrap align-items-center">
+              <img id="current-icon" alt="current weather icon"></img>
+              <p id="currentTemp"></p>             
+            </div> 
+            
+          </ul>
           </section>
 
+          <section id="today">           
+            <!-- add Temp, Wind, and Humidity dynamically -->
+            <article>
+            <div class="weather-params row justify-content-center">
+              
+              <p id="currentConditions"></p>
+              <p id="currentWind"></p>
+              <p id="currentHumidity"></p>
+            </div>
+
+            <div class="weather-params row justify-content-center" id="today-weather">
+
+            </div>
+
+          </section>
+
+        </div>
+
+        <div class="card-body">         
           <section id="forcast" class="d-flex flex-row flex-wrap justify-content-center">
-            <div class="card ">
-              <div class="card-body">
-                <!-- week-day -->
-                <h5 class="car-title"></h5>
-                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-1"></h6>
-                <ul class="weather-params" id="forcast-day-1"></ul>
+            <div class="card">
+              <div class="card-header" id="forcast-date-1">
               </div>
-            </div>
-            <div class="card ">
               <div class="card-body">
                 <!-- week-day -->
-                <h5 class="car-title"></h5>
-                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-2"></h6>
-                <ul class="weather-params" id="forcast-day-2"></ul>
-              </div>
-            </div>
-            <div class="card ">
-              <div class="card-body">
-                <!-- week-day -->
-                <h5 class="car-title"></h5>
-                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-3"></h6>
-                <ul class="weather-params" id="forcast-day-3"></ul>
-              </div>
-            </div>
-            <div class="card ">
-              <div class="card-body">
-                <!-- week-day -->
-                <h5 class="car-title"></h5>
-                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-4"></h6>
-                <ul class="weather-params" id="forcast-day-4"></ul>
+                <div class="weather-params" id="forcast-day-1"></div>
               </div>
             </div>
             <div class="card">
+              <div class="card-header" id="forcast-date-2">
+              </div>
               <div class="card-body">
                 <!-- week-day -->
-                <h5 class="car-title"></h5>
-                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-4"></h6>
-                <ul class="weather-params" id="forcast-day-5"></ul>
+                <div class="weather-params" id="forcast-day-2"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="forcast-date-3">
+              </div>
+              <div class="card-body">
+                <!-- week-day -->               
+                <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-3"></h6>
+                <div class="weather-params" id="forcast-day-3"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="forcast-date-4">
+              </div>
+              <div class="card-body">
+                <!-- week-day -->
+                
+                
+                <div class="weather-params" id="forcast-day-4"></div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header" id="forcast-date-5">
+              </div>
+              <div class="card-body">
+                <!-- week-day -->
+                
+                
+                <div class="weather-params" id="forcast-day-5"></div>
               </div>
             </div>
 
