@@ -8,7 +8,7 @@ This is appplication allows users to lookup weather conditions for cities around
 
 No installation necessary. Just open the following link in a web browser with internet connection.
 
-___
+https://danwillett.github.io/weather-forecast/
 
 ## Usage
 
