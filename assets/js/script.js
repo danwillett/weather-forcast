@@ -17,16 +17,106 @@ var forcastBaseUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=';
 var currentBaseUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=';
 var weatherIconUrl = 'http://openweathermap.org/img/wn/';
 
+var states = {
+    Arizona: 'AZ',
+    Alabama: 'AL',
+    Alaska: 'AK',
+    Arkansas: 'AR',
+    California: 'CA',
+    Colorado: 'CO',
+    Connecticut: 'CT',
+    Delaware: 'DE',
+    Florida: 'FL',
+    Georgia: 'GA',
+    Hawaii: 'HI',
+    Idaho: 'ID',
+    Illinois: 'IL',
+    Indiana: 'IN',
+    Iowa: 'IA',
+    Kansas: 'KS',
+    Kentucky: 'KY',
+    Louisiana: 'LA',
+    Maine: 'ME',
+    Maryland: 'MD',
+    Massachusetts: 'MA',
+    Michigan: 'MI',
+    Minnesota: 'MN',
+    Mississippi: 'MS',
+    Missouri: 'MO',
+    Montana: 'MT',
+    Nebraska: 'NE',
+    Nevada: 'NV',
+    NewHampshire: 'NH',
+    NewJersey: 'NJ',
+    NewMexico: 'NM',
+    NewYork: 'NY',
+    NorthCarolina: 'NC',
+    NorthDakota: 'ND',
+    Ohio: 'OH',
+    Oklahoma: 'OK',
+    Oregon: 'OR',
+    Pennsylvania: 'PA',
+    RhodeIsland: 'RI',
+    SouthCarolina: 'SC',
+    SouthDakota: 'SD',
+    Tennessee: 'TN',
+    Texas: 'TX',
+    Utah: 'UT',
+    Vermont: 'VT',
+    Virginia: 'VA',
+    Washington: 'WA',
+    WestVirginia: 'WV',
+    Wisconsin: 'WI',
+    Wyoming: 'WY',
+}
+
+var stateCode = [];
+var countryCode = [];
 var currentTemp
 // defining global lat and lon variables to be adjusted
 var coors
 // sets localStorage variable to empty.. will later be filled if it already exists
 var savedCities = {};
 
+// takes unix timestamp and converts it to the day of the week it corresponds to
+var dayConverter = function (date) {
+    const unixTimestamp = date;
+    const milliseconds = unixTimestamp * 1000
+    const dateObject = new Date(milliseconds)
+
+    dayOfWeek = dateObject.toLocaleString("en-US", { weekday: "long" }) //2019-12-9 10:30:15
+    return dayOfWeek
+}
+
+// clears local storage and search history section of page
+function removeHistory() {
+    localStorage.removeItem('savedCities')
+    localStorage.removeItem('lastSearch')
+    searchesEl.innerHTML = ''
+}
+
+// removes city from local storage and last search if applicable
+function removeCity(city) {
+    savedCities = JSON.parse(localStorage.getItem('savedCities'))
+    console.log(city)
+    delete savedCities[city]
+    
+    localStorage.setItem('savedCities', JSON.stringify(savedCities))
+   
+
+    var lastSearch = JSON.parse(localStorage.getItem('lastSearch'))
+    console.log(lastSearch)
+    if (lastSearch !==null && lastSearch[0] == city) {
+        
+        localStorage.removeItem('lastSearch')
+    }
+    
+}
+
+// primary function that retrieves weather data for a searched or saved city
 getWeather = function (cityName, stateName, countryName, onload) {
 
     var coordUrl = geocodeUrl + cityName + ',' + stateName + ',' + countryName + '&appid=' + apiId;
-    console.log(coordUrl);
 
     // grabs city coordinates 
     fetch(coordUrl)
@@ -34,7 +124,10 @@ getWeather = function (cityName, stateName, countryName, onload) {
             return response.json()
         })
         .then(function (data) {
+            console.log(`geocode api:`)
             console.log(data)
+            stateCode = data[0].state;
+            countryCode = data[0].country;
             lon = data[0].lon;
             lat = data[0].lat;
             coors = {
@@ -59,12 +152,14 @@ getWeather = function (cityName, stateName, countryName, onload) {
         });
 }
 
+// calls the 5 day weather forcast from openweather API
 function getWeatherForcast(weather5DayUrl) {
     fetch(weather5DayUrl)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
+            console.log("5 day weather call: ")
             console.log(data)
 
             var weatherList = data.list;
@@ -74,11 +169,8 @@ function getWeatherForcast(weather5DayUrl) {
             for (var i = 0; i < weatherList.length; i++) {
                 dayStamps.push(dayConverter(weatherList[i].dt))
             }
-            console.log(dayStamps)
 
             var uniqueDays = [... new Set(dayStamps)]
-
-            console.log(uniqueDays)
 
             var maxTemp = [];
             var minTemp = [];
@@ -100,7 +192,6 @@ function getWeatherForcast(weather5DayUrl) {
                     if (theDay == dayStamps[u]) {
                         w++
                         var weatherProps = weatherList[u];
-                        // console.log(weatherProps)
                         temp.push(Math.round(weatherProps.main.temp));
                         windSpeed.push(weatherProps.wind.speed);
 
@@ -110,17 +201,18 @@ function getWeatherForcast(weather5DayUrl) {
 
                         if (i > 0) {
 
+                            // use weather icon for midday weather predictions
                             if (w == 4) {
-                                console.log(weatherProps.dt_txt)
                                 forcastIconId.push(weatherProps.weather[0].icon)
-                                console.log(forcastIconId)
-                            } else if (i == 6 && u == dayStamps.length - 1 && forcastIconId.length < 5) {
+
+                            } else if (i == 5 && u == dayStamps.length - 1 && forcastIconId.length < 5) {
+                                // if the forecast doesn't extend to midday, use the farthest reaching prediction
+                                // for the 5th day
                                 forcastIconId.push(weatherProps.weather[0].icon)
-                                console.log(weatherProps.dt_txts)
                             }
                         }
                     }
-                    // need a function to sort through conditions, find maxes, and write them
+                    
                 }
 
                 maxHumidity.push(Math.max(...humidity))
@@ -130,15 +222,12 @@ function getWeatherForcast(weather5DayUrl) {
 
             }
 
-            console.log(forcastIconId)
-            console.log(maxTemp)
-
+            // fills in and creates new elements to display weather data for each day
             for (var i = 0; i < forcastDays.length; i++) {
                 var divEl = document.getElementById(forcastDays[i]);
 
                 if (i == 0) {
-                    console.log(currentTemp)
-                    console.log(maxTemp[0])
+
                     if (document.getElementById('today-hi') !== null) {
                         document.getElementById('today-hi').remove()
                     }
@@ -161,7 +250,6 @@ function getWeatherForcast(weather5DayUrl) {
 
                     var weekDayEl = document.getElementById(forcastDates[i]);
                     weekDayEl.setAttribute('class', 'd-flex flex-column justify-content-between align-items-center')
-                    console.log(weekDayEl)
 
                     if (click > 0) {
                         console.log('another click')
@@ -175,7 +263,6 @@ function getWeatherForcast(weather5DayUrl) {
                     weekDayEl.appendChild(dayEl);
 
                     var forcastWeatherIconUrl = weatherIconUrl + forcastIconId[i - 1] + '@2x.png'
-                    console.log(forcastIconId[i - 1])
                     var forcastIcon = document.createElement('img');
                     forcastIcon.setAttribute('src', forcastWeatherIconUrl)
                     forcastIcon.setAttribute('class', "icon-forcast")
@@ -205,29 +292,34 @@ function getWeatherForcast(weather5DayUrl) {
     });
 }
 
-
+// loads current weather conditions from openweather api
 loadWeatherConditions = function (coordinates) {
 
     var lat = coordinates.lat;
     var lon = coordinates.lon;
     var weather5DayUrl = forcastBaseUrl + lat + '&' + 'lon=' + lon + '&appid=' + apiId + '&units=imperial';
     var currentWeatherUrl = currentBaseUrl + lat + '&' + 'lon=' + lon + '&appid=' + apiId + '&units=imperial';
-    console.log(weather5DayUrl);
 
     fetch(currentWeatherUrl)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
+            console.log("current weather call: ")
             console.log(data)
 
             var iconId = data.weather[0].icon;
-            console.log(iconId)
             var currentWeatherIconUrl = weatherIconUrl + iconId + '@2x.png'
-            console.log(currentWeatherIconUrl)
+
             $('#current-icon').attr('src', currentWeatherIconUrl)
 
-            $('#city-name').text(data.name)
+            if (countryCode == "US") {
+                var cityTitle = `${data.name}, ${states[stateCode.trim()]}`
+            } else {
+                var cityTitle = `${data.name}, ${countryCode}`
+            }
+            
+            $('#city-name').text(cityTitle)
 
             currentTemp = Math.round(data.main.temp);
             $('#currentTemp').text(Math.round(data.main.temp) + '°F')
@@ -235,13 +327,8 @@ loadWeatherConditions = function (coordinates) {
             $('#currentWind').text('Wind: ' + Math.round(data.wind.speed) + 'mph')
             $('#currentHumidity').text('Humidity: ' + Math.round(data.main.humidity) + "%")
 
-
-            console.log(data.dt)
             getWeatherForcast(weather5DayUrl)
         })
-    // .catch(function (error) {
-    //     alert('Unable to connect to GitHub');
-    // });
 
 }
 
@@ -258,44 +345,64 @@ var startUpWeather = function () {
 
     } else {
         var defaultCity = JSON.parse(localStorage.getItem("lastSearch"));
-        console.log(defaultCity)
         getWeather(defaultCity[0], defaultCity[1], defaultCity[2], false)
         pastSearches()
     }
 
 }
 
+// fills past search history from local storage
 var pastSearches = function () {
     savedCities = JSON.parse(localStorage.getItem("savedCities"));
     var cityKeys = Object.keys(savedCities)
 
     for (var i = 0; i < cityKeys.length; i++) {
         var thisCity = savedCities[cityKeys[i]];
-        console.log(thisCity)
         addButton(thisCity)
     }
 
 
 }
 
+// creates buttons that search saved city's weather forcast
 var addButton = function (addCity) {
+
     if (document.getElementById(addCity[0]) === null) {
+
         var searchButton = document.createElement('button');
 
         searchButton.setAttribute('id', addCity[0]);
-        searchButton.setAttribute('class', 'searchHistoryButton btn btn-light');
+        searchButton.setAttribute('class', 'searchHistoryButton px-3');
+        searchButton.setAttribute('type', "button")
+        searchButton.setAttribute('aria-label', `load ${addCity[0]} weather`)
+        
 
         searchButton.textContent = addCity[0];
         searchButton.dataset.city = addCity[0];
         searchButton.dataset.state = addCity[1];
         searchButton.dataset.country = addCity[2];
 
-        console.log(searchButton)
-        searchesEl.appendChild(searchButton)
+        var removeButton = document.createElement('button');
+        removeButton.setAttribute('data-city', addCity[0]);
+        removeButton.setAttribute('class', "btn-close mx-3")
+        removeButton.setAttribute('aria-label', "Close")
+        removeButton.setAttribute('type', "button")
+
+        var searchesContainer = document.createElement('section')
+        searchesContainer.setAttribute('class', 'btn btn-light d-flex flex-row justify-content-center align-items-center px-0 my-3 mx-1')
+
+        var hrEl = document.createElement('hr');
+        hrEl.setAttribute('class', 'vr my-0')
+    
+        searchesContainer.appendChild(searchButton)
+        searchesContainer.appendChild(hrEl)
+        searchesContainer.appendChild(removeButton)
+        searchesEl.appendChild(searchesContainer)
     }
 
 }
 
+// function saves the new city as a button in search history and in local storage
 var saveSearch = function (city, state, country) {
     savedCities[cityEl.value] = [city, state, country]
     var lastSearch = [city, state, country]
@@ -304,6 +411,7 @@ var saveSearch = function (city, state, country) {
 
     addButton(lastSearch)
 }
+
 
 startUpWeather()
 
@@ -314,16 +422,16 @@ searchButton.addEventListener('submit', function (event) {
     click++
     event.preventDefault()
     event.stopPropagation()
-    console.log('hi')
 
-    console.log(cityEl)
-    var cityName = cityEl.value;
-    console.log(cityName)
     getWeather(cityEl.value, stateEl.value, countryEl.value, false);
+
+    cityEl.value = '';
+    stateEl.value = '';
+    countryEl.value = '';
 })
 
+// when a city from the search history button is selected, searches the weather from that city
 $('#search-history').on('click', '.searchHistoryButton', function (event) {
-    console.log('hey')
     event.preventDefault();
     event.stopPropagation();
     click++
@@ -334,32 +442,24 @@ $('#search-history').on('click', '.searchHistoryButton', function (event) {
 
 })
 
-var dayConverter = function (date) {
 
-    const unixTimestamp = date
+// removes saved city
+$('#search-history').on('click', '.btn-close', function (event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-    console.log(unixTimestamp)
-    const milliseconds = unixTimestamp * 1000
-    const dateObject = new Date(milliseconds)
+    var thisCity = event.target.getAttribute('data-city');
+    removeCity(thisCity)
+    // getWeather(thisButton.dataset.city, thisButton.dataset.state, thisButton.dataset.country, false)
+    var clearCityEl = event.target.parentElement;
 
-    dayOfWeek = dateObject.toLocaleString("en-US", { weekday: "long" }) //2019-12-9 10:30:15
-    console.log(dayOfWeek)
-    // const currentTime = dateObject.toTimeString().format() //2019-12-9 10:30:15
-    return dayOfWeek
+    clearCityEl.remove()
+})
 
-}
-
-function removeHistory() {
-    localStorage.removeItem('savedCities')
-    localStorage.removeItem('lastSearch')
-    searchesEl.innerHTML = ''
-}
-
+// clears history and search history when button is clicked
 document.getElementById('clear-history').addEventListener('click', function (event) {
     event.preventDefault()
     event.stopPropagation()
     removeHistory()
-
-
 })
 

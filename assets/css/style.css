@@ -47,3 +47,14 @@ input {
     display: none;
     color:red;
 }
+
+button {
+    border-width: 0;
+    background-color: transparent;
+}
+
+.btn-close {
+    padding: 0;
+    height: 0.9em;
+    width: 0.9em;
+}

@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- link bootstrap -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
   <link rel="stylesheet" href="./assets/css/reset.css">
@@ -22,7 +22,7 @@
   </header>
 
   <main class="container-fluid w=100 row">
-     <!-- d-flex flex-row flex-wrap"> -->
+
     <!-- city search form + past search records -->
     <section class="search col-lg-3 col-md-3 col-sm-12">
       <h2>Search for a City:</h2>
@@ -33,20 +33,19 @@
           <label for="state">State Code (USA only)</label>
           <input name="state" type="text" class="form-control" id="inputState" placeholder="Ex: CA">
           <label for="country">Country Code</label>
-          <input name="country" type="text" class="form-control" id="inputCountry" placeholder="Ex: USA">
+         <input name="country" type="text" class="form-control" id="inputCountry" placeholder="Ex: USA">
         </div>
         <button type="submit" id="submit-button" class="btn btn-primary">Submit</button>
       </form>
 
       <article id="error-message">Please enter a valid city.</article>
-
-      <section id="search-history" class="py-4"></section>
-
+      <section id="search-history" class="py-4 d-flex flex-row flex-wrap justify-content-around align-items-center"></section>
       <button id="clear-history" class="btn btn-warning">Clear Cities</button>
 
     </section>
 
-    <section id="weather" class="col-lg-9 col-md-9 col-sm-12">
+    <!-- current and forecasted weather conditions -->
+    <section id="weather" class="col-lg-9 col-md-9 col-sm-12 my-3">
       <div class="card">
         <div class="card-header bg-light">
           <section class="city-name d-flex flex-wrap flex-row align-items-center justify-content-between">
@@ -79,13 +78,14 @@
 
         </div>
 
+        <!-- 5 day forecast -->
         <div class="card-body">         
           <section id="forcast" class="d-flex flex-row flex-wrap justify-content-center">
             <div class="card">
               <div class="card-header" id="forcast-date-1">
               </div>
               <div class="card-body">
-                <!-- week-day -->
+
                 <div class="weather-params" id="forcast-day-1"></div>
               </div>
             </div>
@@ -93,7 +93,7 @@
               <div class="card-header" id="forcast-date-2">
               </div>
               <div class="card-body">
-                <!-- week-day -->
+
                 <div class="weather-params" id="forcast-day-2"></div>
               </div>
             </div>
@@ -101,7 +101,7 @@
               <div class="card-header" id="forcast-date-3">
               </div>
               <div class="card-body">
-                <!-- week-day -->               
+ 
                 <h6 class="card-subtitle mb-2 text-muted" id="forcast-date-3"></h6>
                 <div class="weather-params" id="forcast-day-3"></div>
               </div>
@@ -110,9 +110,6 @@
               <div class="card-header" id="forcast-date-4">
               </div>
               <div class="card-body">
-                <!-- week-day -->
-                
-                
                 <div class="weather-params" id="forcast-day-4"></div>
               </div>
             </div>
@@ -120,9 +117,7 @@
               <div class="card-header" id="forcast-date-5">
               </div>
               <div class="card-body">
-                <!-- week-day -->
-                
-                
+                              
                 <div class="weather-params" id="forcast-day-5"></div>
               </div>
             </div>
@@ -133,8 +128,6 @@
     </section>
   </main>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-  <!-- <script> var utc = require('dayjs/plugin/utc') -->
-  <!-- dayjs.extend(utc)</script> -->
   <script src="./assets/js/script.js"></script>
 </body>
 
