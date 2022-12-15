@@ -12,10 +12,10 @@ var forcastDays = ["today-weather", "forcast-day-1", "forcast-day-2", "forcast-d
 var forcastDates = ["todate-weather", "forcast-date-1", "forcast-date-2", "forcast-date-3", "forcast-date-4", "forcast-date-5"]
 
 var apiId = '9248d00e4b49eb3d83939e35c0de038f';
-var geocodeUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=';
-var forcastBaseUrl = 'http://api.openweathermap.org/data/2.5/forecast?lat=';
+var geocodeUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=';
+var forcastBaseUrl = 'https://api.openweathermap.org/data/2.5/forecast?lat=';
 var currentBaseUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=';
-var weatherIconUrl = 'http://openweathermap.org/img/wn/';
+var weatherIconUrl = 'https://openweathermap.org/img/wn/';
 
 var states = {
     Arizona: 'AZ',
